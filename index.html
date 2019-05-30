@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Time-Zones-Time</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<div class="wrapper">
+		<header>
+			<h1>Time-Zones-Time</h1>
+		</header>
+		<section>
+			<article>
+				<p id="time_string_left_top"></p>
+				<p id="time_string_left_bottom"></p>
+			</article>
+			<article>
+				<div class="buttons_top">
+					<button type="button" onclick="runClocks('pdt'); utc_scale.value=-7">PDT</button>
+					<button type="button" onclick="runClocks('mdt'); utc_scale.value=-6">MDT</button>
+					<button type="button" onclick="runClocks('edt'); utc_scale.value=-4">EDT</button>
+					<button type="button" onclick="runClocks('cest'); utc_scale.value=2">CEST</button>
+				</div>
+				<div>
+					<h2>UTC</h2>
+					<div id="utc_nav">
+						<div>
+							<button type="button" onclick="this.nextElementSibling.stepUp();">+</button>
+							<input type="number" id="utc_scale" min="-12" max="14" value="0" readonly>
+							<button type="button" onclick="this.previousElementSibling.stepDown()">-</button>
+						</div>
+						<div>
+							<button type="button" onclick="runClocks('custom')">Set</button>
+							<button type="button" onclick="utc_scale.value=0">Reset</button>
+						</div>
+					</div>
+				</div>
+			</article>
+			<article>
+				<p id="time_string_right_top"></p>
+				<p id="time_string_right_bottom"></p>
+			</article>
+		</section>
+		<footer></footer>
+	</div>
+	<script src="main.js"></script>
+</body>
+</html>
