@@ -205,7 +205,8 @@ article:nth-of-type(2) div:first-child {
 }
 
 p {
-	top: 30%;
+	top: 10%;
+	transform: translate(0, 0);
 }
 
 p:first-child {
