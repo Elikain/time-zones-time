@@ -82,6 +82,27 @@ article:nth-of-type(2) div:first-child {
 	justify-content: space-around;
 }
 
+button {
+	font-family: sans-serif;
+	padding: 1px 5px;
+	margin: 1px;
+	border-radius: 3px;
+	font-size: 15px;
+	font-weight: bold;
+	background: #d3d3d3;
+	border: 3px outset #b8b8b8;
+}
+
+button:hover {
+	background: #b3b3b4;
+}
+
+button:active {
+	background: #818181;
+	border-style: inset;
+	border-color: #a3a3a3;
+}
+
 article:nth-of-type(2) div:first-child button {
 	max-height: 100px;
 }
@@ -112,14 +133,6 @@ article:nth-of-type(2) div:last-child {
 
 #utc_nav div:last-child button {
 	flex: 1;
-}
-
-button {
-	font-family: sans-serif;
-	padding: 1px 5px;
-	margin: 0;
-	font-size: 15px;
-	font-weight: bold;
 }
 
 h2 {
