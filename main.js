@@ -1,6 +1,7 @@
 const runClocks = (function() {
 	const local_clock_up = document.getElementById('time_string_left_top');
 	const local_clock_down = document.getElementById('time_string_left_bottom');
+	const forein_utc_string = document.getElementById('utc_string_right');
 	const forein_clock_up = document.getElementById('time_string_right_top');
 	const forein_clock_down = document.getElementById('time_string_right_bottom');
 	const utc_scale = document.getElementById('utc_scale');
@@ -137,6 +138,12 @@ const runClocks = (function() {
 			case 'custom':
 				difference = offset + utc_scale.value * ms;
 				break;
+		}
+		
+		if (utc_scale.value >= 0) {
+			forein_utc_string.innerHTML = `UTC+${utc_scale.value}`;
+		} else {
+			forein_utc_string.innerHTML = `UTC${utc_scale.value}`;
 		}
 
 		showTime('forein');
