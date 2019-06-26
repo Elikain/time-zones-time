@@ -1,12 +1,13 @@
 const runClocks = (function() {
-	const local_clock_up = document.getElementById('time_string_left_top');
-	const local_clock_down = document.getElementById('time_string_left_bottom');
-	const forein_utc_string = document.getElementById('utc_string_right');
-	const forein_clock_up = document.getElementById('time_string_right_top');
-	const forein_clock_down = document.getElementById('time_string_right_bottom');
-	//const utc_scale = document.getElementById('utc_scale');
-	//const minus_button = document.getElementById('minus_button');
-	//const plus_button = document.getElementById('plus_button');
+	const localClockUp = document.getElementById('time_string_left_top');
+	const localClockDown = document.getElementById('time_string_left_bottom');
+	const foreinUtcString = document.getElementById('utc_string_right');
+	const foreinClockUp = document.getElementById('time_string_right_top');
+	const foreinClockDown = document.getElementById('time_string_right_bottom');
+	const utcScale = document.getElementById('utc_scale');
+	const minusButton = document.getElementById('minus_button');
+	const plusButton = document.getElementById('plus_button');
+	const resetButton = document.getElementById('reset_button');
 	const dayName = ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'];
 	const monthName = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
 	let mouseDownInterval, isMouseDown = false, isOnClickEnable, timerInterval;
@@ -14,30 +15,38 @@ const runClocks = (function() {
 	window.onload = runClocks();
 
 	/* События при нажатии кнопки "+" */
-	plus_button.onmousedown = onMouseDown.bind(null, '+');
+	plusButton.onmousedown = onMouseDown.bind(null, '+');
 
-	plus_button.onmouseup = onMouseUp;
+	plusButton.onmouseup = onMouseUp;
 
-	plus_button.onmouseout = onMouseOut;
+	plusButton.onmouseout = onMouseOut;
 
-	plus_button.onmouseover = onMouseOver;
+	plusButton.onmouseover = onMouseOver;
 
-	plus_button.onclick = onClick.bind(plus_button, '+');
+	plusButton.onclick = onClick.bind(plusButton, '+');
+
+	plusButton.addEventListener('touchstart', onMouseDown.bind(null, '+'));
+
+	plusButton.addEventListener('touchend', onTouchEnd);
 
 	/* События при нажатии кнопки "-" */
-	minus_button.onmousedown = onMouseDown.bind(null, '-');
+	minusButton.onmousedown = onMouseDown.bind(null, '-');
 
-	minus_button.onmouseup = onMouseUp;
+	minusButton.onmouseup = onMouseUp;
 
-	minus_button.onmouseout = onMouseOut;
+	minusButton.onmouseout = onMouseOut;
 
-	minus_button.onmouseover = onMouseOver;
+	minusButton.onmouseover = onMouseOver;
 
-	minus_button.onclick = onClick.bind(minus_button, '-');
+	minusButton.onclick = onClick.bind(minusButton, '-');
+
+	minusButton.addEventListener('touchstart', onMouseDown.bind(null, '-'));
+
+	minusButton.addEventListener('touchend', onTouchEnd);
 
 	/* Событие при нажатии кнопки "reset" */
-	reset_button.addEventListener('click', function() {
-		utc_scale.value = 0;
+	resetButton.addEventListener('click', function() {
+		utcScale.value = 0;
 	});
 
 	/* Функции событий */
@@ -51,21 +60,21 @@ const runClocks = (function() {
 			
 			switch (sign) {
 				case '+': 
-					if (utc_scale.value > 13) {
+					if (utcScale.value > 13) {
 						clearInterval(mouseDownInterval);
 						return;
 					}
 
-					utc_scale.value++;
+					utcScale.value++;
 					break;
 
 				case '-':
-					if (utc_scale.value < -11) {
+					if (utcScale.value < -11) {
 						clearInterval(mouseDownInterval);
 						return;
 					}
 
-					utc_scale.value--;
+					utcScale.value--;
 					break;
 			}
 		}, 250);
@@ -104,6 +113,12 @@ const runClocks = (function() {
 		
 		isOnClickEnable = true;
 	}
+
+	function onTouchEnd() {
+		clearInterval(mouseDownInterval);
+
+		isOnClickEnable = true;
+	}
 	
 	/*
 	Главная функция, устанавливает и отображает время
@@ -125,34 +140,34 @@ const runClocks = (function() {
 				return;
 
 			case 'pdt':
-				utc_scale.value = -7;
+				utcScale.value = -7;
 				difference = offset - 7 * ms;
 				break;
 
 			case 'mdt':
-				utc_scale.value = -6;
+				utcScale.value = -6;
 				difference = offset - 6 * ms;
 				break;
 
 			case 'edt':
-				utc_scale.value = -4;
+				utcScale.value = -4;
 				difference = offset - 4 * ms;
 				break;
 
 			case 'cest':
-				utc_scale.value = 2;
+				utcScale.value = 2;
 				difference = offset + 2 * ms;
 				break;
 			
 			case 'custom':
-				difference = offset + utc_scale.value * ms;
+				difference = offset + utcScale.value * ms;
 				break;
 		}
 		
-		if (utc_scale.value >= 0) {
-			forein_utc_string.innerHTML = `UTC+${utc_scale.value}`;
+		if (utcScale.value >= 0) {
+			foreinUtcString.innerHTML = `UTC+${utcScale.value}`;
 		} else {
-			forein_utc_string.innerHTML = `UTC${utc_scale.value}`;
+			foreinUtcString.innerHTML = `UTC${utcScale.value}`;
 		}
 
 		showTime('forein');
@@ -167,22 +182,22 @@ const runClocks = (function() {
 		отвечающая за отображение местного или заграничного времени в соответствующих блоках 
 		*/
 		function showTime(location) {
-			let clock_up, clock_down;
+			let clockUp, clockDown;
 			
 			if(location === 'local') {
-				clock_up = local_clock_up;
-				clock_down = local_clock_down;
+				clockUp = localClockUp;
+				clockDown = localClockDown;
 				timeNow = new Date();
 			} else if(location === 'forein') {
-				clock_up = forein_clock_up;
-				clock_down = forein_clock_down;
+				clockUp = foreinClockUp;
+				clockDown = foreinClockDown;
 				timeNow = new Date(new Date().getTime() + difference);
 			} else {
 				throw new Error('Wrong location');
 			}
 
-			clock_up.innerHTML = timeNow.toLocaleTimeString();
-			clock_down.innerHTML = `${dayName[timeNow.getDay()]}, ${timeNow.getDate()} ${monthName[timeNow.getMonth()]} ${timeNow.getFullYear()} г.`;
+			clockUp.innerHTML = timeNow.toLocaleTimeString();
+			clockDown.innerHTML = `${dayName[timeNow.getDay()]}, ${timeNow.getDate()} ${monthName[timeNow.getMonth()]} ${timeNow.getFullYear()} г.`;
 		}
 	}
 
