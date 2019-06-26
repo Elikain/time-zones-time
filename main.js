@@ -117,6 +117,7 @@ const runClocks = (function() {
 	function onTouchEnd() {
 		clearInterval(mouseDownInterval);
 
+		isMouseDown = false;
 		isOnClickEnable = true;
 	}
 	
