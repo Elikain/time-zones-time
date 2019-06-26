@@ -99,6 +99,10 @@ button {
 	font-weight: bold;
 	background: #d3d3d3;
 	border: 3px outset #b8b8b8;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 button:hover {

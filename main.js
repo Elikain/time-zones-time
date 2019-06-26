@@ -4,9 +4,9 @@ const runClocks = (function() {
 	const forein_utc_string = document.getElementById('utc_string_right');
 	const forein_clock_up = document.getElementById('time_string_right_top');
 	const forein_clock_down = document.getElementById('time_string_right_bottom');
-	const utc_scale = document.getElementById('utc_scale');
-	const minus_button = document.getElementById('minus_button');
-	const plus_button = document.getElementById('plus_button');
+	//const utc_scale = document.getElementById('utc_scale');
+	//const minus_button = document.getElementById('minus_button');
+	//const plus_button = document.getElementById('plus_button');
 	const dayName = ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'];
 	const monthName = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
 	let mouseDownInterval, isMouseDown = false, isOnClickEnable, timerInterval;
@@ -34,6 +34,11 @@ const runClocks = (function() {
 	minus_button.onmouseover = onMouseOver;
 
 	minus_button.onclick = onClick.bind(minus_button, '-');
+
+	/* Событие при нажатии кнопки "reset" */
+	reset_button.addEventListener('click', function() {
+		utc_scale.value = 0;
+	});
 
 	/* Функции событий */
 	function onMouseDown(sign) {
@@ -101,7 +106,7 @@ const runClocks = (function() {
 	}
 	
 	/*
-	Главная функция
+	Главная функция, устанавливает и отображает время
 	*/
 	function runClocks(timezone) {
 		clearInterval(timerInterval); //сброс предыдущих таймеров для предотовращения дублирования
@@ -119,20 +124,24 @@ const runClocks = (function() {
 				}, 1000);
 				return;
 
-			case 'cest':
-				difference = offset + 2 * ms;
-				break;
-
 			case 'pdt':
+				utc_scale.value = -7;
 				difference = offset - 7 * ms;
 				break;
 
 			case 'mdt':
+				utc_scale.value = -6;
 				difference = offset - 6 * ms;
 				break;
 
 			case 'edt':
+				utc_scale.value = -4;
 				difference = offset - 4 * ms;
+				break;
+
+			case 'cest':
+				utc_scale.value = 2;
+				difference = offset + 2 * ms;
 				break;
 			
 			case 'custom':
